@@ -1,17 +1,17 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { GET as listFlashcards, POST as createFlashcard } from "../src/pages/api/flashcards/index.ts";
+import {
+  GET as listFlashcards,
+  POST as createFlashcardRoute,
+} from "../src/pages/api/flashcards/index.ts";
 import {
   DELETE as deleteFlashcard,
   PATCH as updateFlashcard,
 } from "../src/pages/api/flashcards/[id].ts";
-import {
-  createManualFlashcard,
-  listFlashcards as listFlashcardsService,
-} from "../src/lib/services/flashcards.ts";
+import { createFlashcard, listFlashcards as listFlashcardsService } from "../src/lib/services/flashcards.ts";
 
 vi.mock("../src/lib/services/flashcards.ts", () => ({
-  createManualFlashcard: vi.fn(),
+  createFlashcard: vi.fn(),
   listFlashcards: vi.fn(),
 }));
 
@@ -64,7 +64,7 @@ describe("flashcards API", () => {
       deleted_at: null,
     };
 
-    vi.mocked(createManualFlashcard).mockResolvedValue({
+    vi.mocked(createFlashcard).mockResolvedValue({
       data: flashcard,
       error: null,
     });
@@ -81,7 +81,7 @@ describe("flashcards API", () => {
       }),
     });
 
-    const response = await createFlashcard(
+    const response = await createFlashcardRoute(
       makeContext({
         request,
         supabase: makeSupabaseAuthMock(),
