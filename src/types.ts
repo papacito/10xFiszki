@@ -43,6 +43,41 @@ export type MessageResponseDto = {
   message: string;
 };
 
+export type OpenRouterChatRole = "system" | "user" | "assistant";
+
+export type OpenRouterChatMessage = {
+  role: OpenRouterChatRole;
+  content: string;
+  name?: string;
+};
+
+export type OpenRouterChatRequestDto = {
+  model: string;
+  messages: OpenRouterChatMessage[];
+  temperature?: number;
+  max_tokens?: number;
+  top_p?: number;
+};
+
+export type OpenRouterChatChoiceDto = {
+  index: number;
+  message: OpenRouterChatMessage;
+  finish_reason: string | null;
+};
+
+export type OpenRouterChatResponseDto = {
+  id: string;
+  model: string;
+  created: number;
+  choices: OpenRouterChatChoiceDto[];
+};
+
+export type OpenRouterChatErrorResponseDto = MessageResponseDto & {
+  status?: number;
+  code?: string;
+  details?: string;
+};
+
 type GenerationSessionEntity = Tables<"generation_sessions">;
 type GenerationSessionInsert = TablesInsert<"generation_sessions">;
 
