@@ -1,0 +1,25 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import FlashcardEditForm from "../../../components/flashcards/FlashcardEditForm";
+
+const { id } = Astro.params;
+---
+
+<Layout title="Edit Flashcard">
+  <main class="min-h-screen bg-slate-50 text-slate-900">
+    <div class="mx-auto flex max-w-3xl flex-col px-6 py-12">
+      <header>
+        <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          Flashcards
+        </p>
+        <h1 class="mt-2 text-3xl font-semibold text-slate-900">
+          Edit your flashcard
+        </h1>
+        <p class="mt-2 text-base text-slate-600">
+          Update the prompt and answer to keep the card accurate.
+        </p>
+      </header>
+      {id ? <FlashcardEditForm cardId={id} client:load /> : null}
+    </div>
+  </main>
+</Layout>

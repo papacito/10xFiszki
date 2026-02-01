@@ -321,15 +321,20 @@ export default function FlashcardsList() {
                     {card.source_type === "ai" ? "AI" : "Manual"}
                   </span>
                   <span>Updated {formatDate(card.updated_at)}</span>
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => handleDelete(card.id)}
-                    disabled={deletingId === card.id}
-                  >
-                    {deletingId === card.id ? "Deleting..." : "Delete"}
-                  </Button>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Button asChild size="sm" variant="outline">
+                      <a href={`/flashcards/${card.id}/edit`}>Edit</a>
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => handleDelete(card.id)}
+                      disabled={deletingId === card.id}
+                    >
+                      {deletingId === card.id ? "Deleting..." : "Delete"}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </li>
