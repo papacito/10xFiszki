@@ -33,7 +33,10 @@ describe("auth form (user flow)", () => {
     });
 
     expect(localStorage.getItem("refresh_token")).toBe("refresh-456");
-    expect(screen.getByText("Logged in successfully.")).toBeTruthy();
+    expect(screen.getByText("Next steps")).toBeTruthy();
+    expect(screen.getByRole("link", { name: "Generate from text" })).toBeTruthy();
+    expect(screen.getByRole("link", { name: "Create manual card" })).toBeTruthy();
+    expect(screen.getByRole("link", { name: "List flashcards" })).toBeTruthy();
 
     vi.unstubAllGlobals();
   });
