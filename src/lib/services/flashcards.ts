@@ -2,13 +2,14 @@ import type { SupabaseClient } from '../../db/supabase.client.ts';
 import type { Database } from '../../db/database.types.ts';
 import type { FlashcardDto, FlashcardSourceType } from '../../types.ts';
 
-type CreateManualFlashcardInput = {
+type CreateFlashcardInput = {
   userId: string;
   front: string;
   back: string;
+  sourceType: FlashcardSourceType;
 };
 
-type CreateManualFlashcardResult = {
+type CreateFlashcardResult = {
   data: FlashcardDto | null;
   error: Error | null;
 };
@@ -31,17 +32,17 @@ type ListFlashcardsResult = {
 /**
  * Creates a manual flashcard for the authenticated user.
  */
-export const createManualFlashcard = async (
+export const createFlashcard = async (
   supabase: SupabaseClient<Database>,
-  input: CreateManualFlashcardInput
-): Promise<CreateManualFlashcardResult> => {
+  input: CreateFlashcardInput
+): Promise<CreateFlashcardResult> => {
   const { data, error } = await supabase
     .from('flashcards')
     .insert({
       user_id: input.userId,
       front: input.front,
       back: input.back,
-      source_type: 'manual',
+      source_type: input.sourceType,
     })
     .select('id, front, back, source_type, created_at, updated_at, deleted_at')
     .single();

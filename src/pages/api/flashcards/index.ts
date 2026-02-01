@@ -7,13 +7,14 @@ import type {
   FlashcardListResponseDto,
   MessageResponseDto,
 } from '../../../types.ts';
-import { createManualFlashcard, listFlashcards } from '../../../lib/services/flashcards.ts';
+import { createFlashcard, listFlashcards } from '../../../lib/services/flashcards.ts';
 
 export const prerender = false;
 
 const createFlashcardSchema = z.object({
   front: z.string().trim().min(1, 'front is required'),
   back: z.string().trim().min(1, 'back is required'),
+  source_type: z.enum(['manual', 'ai']).optional(),
 });
 
 const emptyToUndefined = (value: unknown) =>
@@ -205,10 +206,11 @@ export const POST: APIRoute = async (context) => {
     );
   }
 
-  const { data, error } = await createManualFlashcard(context.locals.supabase, {
+  const { data, error } = await createFlashcard(context.locals.supabase, {
     userId,
     front: parsed.data.front,
     back: parsed.data.back,
+    sourceType: parsed.data.source_type ?? 'manual',
   });
 
   if (error || !data) {

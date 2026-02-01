@@ -160,7 +160,10 @@ type FlashcardUpdate = TablesUpdate<"flashcards">;
 
 export type FlashcardSourceType = "ai" | "manual";
 
-export type CreateFlashcardCommand = Pick<FlashcardInsert, "front" | "back">;
+export type CreateFlashcardCommand = Pick<
+  FlashcardInsert,
+  "front" | "back" | "source_type"
+>;
 
 export type UpdateFlashcardCommand = Pick<FlashcardUpdate, "front" | "back">;
 

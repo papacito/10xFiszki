@@ -222,9 +222,14 @@ export default function FlashcardsList() {
               Search, filter, and review your saved cards.
             </p>
           </div>
-          <Button asChild className="self-start sm:self-auto">
-            <a href="/flashcards/new">Create manual card</a>
-          </Button>
+          <div className="flex flex-wrap gap-2 self-start sm:self-auto">
+            <Button asChild>
+              <a href="/flashcards/new#generate">Generate from text</a>
+            </Button>
+            <Button asChild variant="outline">
+              <a href="/flashcards/new">Create manual card</a>
+            </Button>
+          </div>
         </div>
         <form
           className="flex flex-col gap-3 sm:flex-row sm:items-end"
