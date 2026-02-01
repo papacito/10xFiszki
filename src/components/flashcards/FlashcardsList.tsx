@@ -56,6 +56,7 @@ export default function FlashcardsList() {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [authRequired, setAuthRequired] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const requestIdRef = useRef(0);
 
   const statusMessage = useMemo(() => {
@@ -159,6 +160,57 @@ export default function FlashcardsList() {
       loadFlashcards({ cursorParam: cursor, append: true });
     }
   }, [cursor, isLoadingMore, loadFlashcards]);
+
+  const handleDelete = useCallback(
+    async (cardId: string) => {
+      if (deletingId) {
+        return;
+      }
+
+      const confirmed = window.confirm(
+        "Delete this flashcard? You can’t undo this action."
+      );
+      if (!confirmed) {
+        return;
+      }
+
+      const token = getAccessToken();
+      if (!token) {
+        setAuthRequired(true);
+        return;
+      }
+
+      setDeletingId(cardId);
+      setError(null);
+
+      try {
+        const response = await fetch(`/api/flashcards/${cardId}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 401) {
+          setAuthRequired(true);
+          return;
+        }
+
+        if (!response.ok) {
+          const payload = await response.json().catch(() => null);
+          setError(payload?.message ?? "Failed to delete flashcard.");
+          return;
+        }
+
+        setFlashcards((current) => current.filter((card) => card.id !== cardId));
+      } catch {
+        setError("Network error while deleting flashcard.");
+      } finally {
+        setDeletingId(null);
+      }
+    },
+    [deletingId]
+  );
 
   return (
     <section className="mt-8 space-y-6">
@@ -264,11 +316,20 @@ export default function FlashcardsList() {
                     <p className="text-sm text-slate-700">{card.back}</p>
                   </div>
                 </div>
-                <div className="flex flex-col gap-2 text-xs text-slate-500 sm:text-right">
+                <div className="flex flex-col items-start gap-2 text-xs text-slate-500 sm:items-end sm:text-right">
                   <span className="rounded-full border border-slate-200 px-2 py-1 text-[11px] uppercase">
                     {card.source_type === "ai" ? "AI" : "Manual"}
                   </span>
                   <span>Updated {formatDate(card.updated_at)}</span>
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => handleDelete(card.id)}
+                    disabled={deletingId === card.id}
+                  >
+                    {deletingId === card.id ? "Deleting..." : "Delete"}
+                  </Button>
                 </div>
               </div>
             </li>
