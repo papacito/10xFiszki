@@ -1,0 +1,23 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AuthForm from "../components/auth/AuthForm";
+---
+
+<Layout title="Authenticate">
+  <main class="min-h-screen bg-slate-50 text-slate-900">
+    <div class="mx-auto flex max-w-lg flex-col px-6 py-12">
+      <header>
+        <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          Authentication
+        </p>
+        <h1 class="mt-2 text-3xl font-semibold text-slate-900">
+          Sign in to continue
+        </h1>
+        <p class="mt-2 text-base text-slate-600">
+          Access your flashcards across devices with your account.
+        </p>
+      </header>
+      <AuthForm client:load />
+    </div>
+  </main>
+</Layout>
