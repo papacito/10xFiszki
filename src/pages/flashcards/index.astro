@@ -1,0 +1,23 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import FlashcardsList from "../../components/flashcards/FlashcardsList";
+---
+
+<Layout title="My Flashcards">
+  <main class="min-h-screen bg-slate-50 text-slate-900">
+    <div class="mx-auto flex max-w-4xl flex-col px-6 py-12">
+      <header>
+        <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          Flashcards
+        </p>
+        <h1 class="mt-2 text-3xl font-semibold text-slate-900">
+          Review and manage your cards
+        </h1>
+        <p class="mt-2 text-base text-slate-600">
+          Filter your deck, scan updates, and jump into new manual creation.
+        </p>
+      </header>
+      <FlashcardsList client:load />
+    </div>
+  </main>
+</Layout>
